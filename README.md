@@ -1,7 +1,8 @@
 # Étudiant en Master en Intelligence Artificielle et Science des Données à la Faculté des Sciences et techniques de Tanger.
 
 ## Education
-- Master en Intelligence Artificielle et Science des Données | Faculté des Sciences et techniques de Tanger		(_2023-present_)	 	- LST en Génie Informatique | Faculté des Sciences et techniques de Tanger		(_2020-2023_)	 
+- Master en Intelligence Artificielle et Science des Données | Faculté des Sciences et techniques de Tanger(_2023-present_)
+- LST en Génie Informatique | Faculté des Sciences et techniques de Tanger		(_2020-2023_)	 
 
 ## EXPERIENCE
 **PFE : Analyst and Developpeur @ Kiinov (_10/04/2023 -18/08/2023_)**
