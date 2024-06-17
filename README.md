@@ -3,7 +3,21 @@
 ## Education
 - Master en Intelligence Artificielle et Science des Données | Faculté des Sciences et techniques de Tanger(_2023-present_)
 - LST en Génie Informatique | Faculté des Sciences et techniques de Tanger		(_2020-2023_)	 
-
+## LANGUAGES
+- Anglais: C1 (_Toefl IBT 104_)
+- Français : C1 (_TCF_)
+## COMPÉTENCES
+- Machine Learning
+- Machine Learning
+- Angular
+- Node.Js
+- Mysql / MongoDB
+- Python
+- Javascript/Typescript
+- Java
+- UML
+- LINUX/UNIX
+- Docker
 ## EXPERIENCE
 **PFE : Analyst and Developpeur @ Kiinov (_10/04/2023 -18/08/2023_)**
 - Conception et développement d'une application de Gestion de Stock full stack en utilisant le Stack MEAN (MongoDB, Express.js,Angular,Node.js).
