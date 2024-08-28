@@ -12,6 +12,7 @@ body {
     width: 150px;
     height: 150px;
     object-fit: cover;
+    float: left;
     border: 2px solid #333;
 }
 
