@@ -4,6 +4,17 @@ body {
     padding: 0;
     line-height: 1.6;
 }
+/* Add this to styles.css */
+.profile-photo {
+    display: block;
+    margin: 20px auto;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 2px solid #333;
+}
+
 
 header {
     background: #333;
