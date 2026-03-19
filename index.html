@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chihab-Eddine LIEFRID</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0f11;
+    --paper: #f5f2ec;
+    --accent: #1a4fad;
+    --accent-light: #e8edf8;
+    --mid: #6b6b72;
+    --border: #dedad3;
+    --warm-white: #faf8f4;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px; line-height: 1.6; overflow-x: hidden;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ── LANGUAGE BANNER ── */
+  .lang-banner {
+    position: fixed; top: 0; left: 0; right: 0; height: 52px;
+    background: var(--warm-white); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: flex-end;
+    padding: 0 40px; z-index: 200; gap: 12px;
+  }
+  .lang-banner-label { font-size: 12px; color: var(--mid); font-weight: 500; letter-spacing: 0.3px; }
+  .lang-toggle {
+    display: flex; align-items: center;
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 100px; padding: 3px; gap: 2px;
+  }
+  .lang-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 100px; border: none;
+    background: transparent; font-family: 'DM Sans', sans-serif;
+    font-size: 13px; font-weight: 500; color: var(--mid);
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.3px;
+  }
+  .lang-btn .flag { font-size: 15px; }
+  .lang-btn.active { background: var(--ink); color: white; box-shadow: 0 1px 4px rgba(0,0,0,0.15); }
+  .lang-btn:not(.active):hover { color: var(--ink); background: var(--border); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed; left: 0; top: 52px; bottom: 0; width: 300px;
+    background: var(--ink); color: var(--paper);
+    padding: 36px 36px 48px; display: flex; flex-direction: column;
+    z-index: 10; overflow-y: auto;
+  }
+  .profile-photo-wrap {
+    display: flex; justify-content: center;
+    margin-bottom: 20px; padding-top: 16px;
+    animation: fadeUp 0.5s ease both;
+  }
+  .profile-photo {
+    width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.12); background: #1e2030; display: block;
+  }
+  .profile-photo-fallback {
+    width: 96px; height: 96px; border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.12); background: #1e2030;
+    display: none; align-items: center; justify-content: center; font-size: 32px;
+  }
+  .sidebar-logo {
+    font-family: 'DM Serif Display', serif; font-size: 24px; line-height: 1.2;
+    letter-spacing: -0.5px; margin-bottom: 6px; text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+  .sidebar-subtitle {
+    font-size: 10px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase;
+    color: #8a8a94; margin-bottom: 28px; text-align: center;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .sidebar-nav {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-bottom: auto; animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .nav-link {
+    display: flex; align-items: center; gap: 12px; text-decoration: none;
+    color: #8a8a94; font-size: 13px; font-weight: 500; letter-spacing: 0.5px;
+    padding: 10px 14px; border-radius: 8px; transition: all 0.2s;
+  }
+  .nav-link:hover, .nav-link.active { color: var(--paper); background: rgba(255,255,255,0.06); }
+  .nav-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #8a8a94; flex-shrink: 0; transition: background 0.2s;
+  }
+  .nav-link:hover .nav-dot, .nav-link.active .nav-dot { background: var(--accent); }
+  .sidebar-contact {
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 24px; margin-top: 24px;
+    display: flex; flex-direction: column; gap: 10px; animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .contact-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: #8a8a94; text-decoration: none; transition: color 0.2s;
+  }
+  .contact-item:hover { color: var(--paper); }
+  .contact-item svg { flex-shrink: 0; }
+  .availability-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(26,79,173,0.18); border: 1px solid rgba(26,79,173,0.3);
+    color: #7aa4f0; font-size: 11px; font-weight: 500; letter-spacing: 0.3px;
+    padding: 7px 12px; border-radius: 100px; margin-top: 20px;
+  }
+  .pulse {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #7aa4f0; position: relative; flex-shrink: 0;
+  }
+  .pulse::after {
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
+    border: 1px solid #7aa4f0; animation: pulseRing 2s infinite;
+  }
+  .cv-download-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 12px; padding: 11px 16px; background: var(--accent); color: white;
+    text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.3px;
+    border-radius: 8px; transition: background 0.2s, transform 0.15s;
+  }
+  .cv-download-btn:hover { background: #1642a0; transform: translateY(-1px); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 300px; margin-top: 52px;
+    min-height: calc(100vh - 52px); padding: 72px 72px 80px; max-width: 900px;
+  }
+  .content-fade { transition: opacity 0.22s ease; }
+  .content-fade.fading { opacity: 0; }
+  .section {
+    margin-bottom: 88px; opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .section.visible { opacity: 1; transform: translateY(0); }
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif; font-size: 38px;
+    line-height: 1.15; letter-spacing: -1px; margin-bottom: 40px; color: var(--ink);
+  }
+  .divider { width: 48px; height: 3px; background: var(--accent); border-radius: 2px; margin-bottom: 40px; }
+  .hero-intro {
+    font-size: 18px; color: var(--mid); line-height: 1.8; max-width: 600px; margin-bottom: 40px;
+    border-left: 3px solid var(--accent); padding-left: 24px; font-weight: 300; font-style: italic;
+  }
+  .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 36px; color: var(--ink); line-height: 1; }
+  .stat-label { font-size: 12px; color: var(--mid); font-weight: 500; letter-spacing: 0.5px; }
+
+  /* ── TIMELINE ── */
+  .timeline { display: flex; flex-direction: column; }
+  .timeline-item {
+    display: grid; grid-template-columns: 160px 1fr;
+    gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--border);
+  }
+  .timeline-item:last-child { border-bottom: none; }
+  .timeline-date { font-size: 12px; color: var(--mid); font-weight: 500; padding-top: 4px; line-height: 1.5; }
+  .timeline-current {
+    display: inline-block; background: var(--accent); color: white;
+    font-size: 9px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; margin-top: 6px;
+  }
+  .timeline-role { font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 2px; line-height: 1.3; }
+  .timeline-company { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 14px; }
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .timeline-bullets li {
+    font-size: 14px; color: var(--mid); padding-left: 16px; position: relative; line-height: 1.6;
+  }
+  .timeline-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+
+  /* ── SKILLS ── */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .skill-card {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .skill-card:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(26,79,173,0.07); }
+  .skill-card-title {
+    font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+  }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 11px; font-size: 13px; color: var(--ink); transition: all 0.2s;
+  }
+  .tag:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: flex; flex-direction: column; }
+  .edu-item {
+    display: grid; grid-template-columns: 160px 1fr;
+    gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--border);
+  }
+  .edu-item:last-child { border-bottom: none; }
+  .edu-year { font-size: 12px; color: var(--mid); font-weight: 500; padding-top: 3px; }
+  .edu-degree { font-weight: 600; font-size: 16px; color: var(--ink); margin-bottom: 4px; line-height: 1.4; }
+  .edu-school { font-size: 13px; color: var(--mid); }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .project-card {
+    background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px; transition: all 0.25s; position: relative; overflow: hidden;
+  }
+  .project-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease;
+  }
+  .project-card:hover {
+    border-color: var(--accent); box-shadow: 0 8px 32px rgba(26,79,173,0.09); transform: translateY(-3px);
+  }
+  .project-card:hover::before { transform: scaleX(1); }
+  .project-icon {
+    width: 40px; height: 40px; background: var(--accent-light);
+    border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px; font-size: 18px;
+  }
+  .project-name { font-weight: 600; font-size: 16px; color: var(--ink); margin-bottom: 10px; line-height: 1.3; }
+  .project-desc { font-size: 13px; color: var(--mid); line-height: 1.65; }
+
+  /* ── LANGUAGES SECTION ── */
+  .lang-grid { display: flex; gap: 20px; }
+  .lang-card {
+    flex: 1; background: var(--warm-white); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .lang-name { font-weight: 600; font-size: 16px; }
+  .lang-level { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .lang-badge {
+    background: var(--accent); color: white;
+    font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
+  }
+  .lang-cert { font-size: 11px; color: var(--mid); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulseRing {
+    0%   { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2);   opacity: 0; }
+  }
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .lang-banner { padding: 0 20px; }
+    .sidebar { position: relative; width: 100%; top: 0; padding: 36px 28px; }
+    .main { margin-left: 0; margin-top: 52px; padding: 40px 24px; }
+    .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+    .timeline-item, .edu-item { grid-template-columns: 1fr; gap: 8px; }
+    .lang-grid { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── LANGUAGE BANNER ── -->
+<div class="lang-banner">
+  <span class="lang-banner-label">Langue / Language</span>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">
+      <span class="flag">&#x1F1EB;&#x1F1F7;</span> Fran&ccedil;ais
+    </button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">
+      <span class="flag">&#x1F1EC;&#x1F1E7;</span> English
+    </button>
+  </div>
+</div>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="profile-photo-wrap">
+    <img
+      src="https://novoSoftEng.github.io/portfolio/assets/photo.jpg"
+      alt="Chihab-Eddine LIEFRID"
+      class="profile-photo"
+      onerror="this.style.display='none'; document.querySelector('.profile-photo-fallback').style.display='flex';"
+    />
+    <div class="profile-photo-fallback">&#x1F464;</div>
+  </div>
+
+  <div class="sidebar-logo">Chihab-Eddine<br>LIEFRID</div>
+  <div class="sidebar-subtitle" id="sb-subtitle">Data Scientist &middot; Ing&eacute;nieur IA</div>
+
+  <nav class="sidebar-nav">
+    <a href="#section-about"    class="nav-link active" id="nav-about">   <span class="nav-dot"></span><span id="nav-about-label">&#192; propos</span></a>
+    <a href="#section-exp"      class="nav-link"        id="nav-exp">     <span class="nav-dot"></span><span id="nav-exp-label">Exp&eacute;riences</span></a>
+    <a href="#section-edu"      class="nav-link"        id="nav-edu">     <span class="nav-dot"></span><span id="nav-edu-label">Formation</span></a>
+    <a href="#section-skills"   class="nav-link"        id="nav-skills">  <span class="nav-dot"></span><span id="nav-skills-label">Comp&eacute;tences</span></a>
+    <a href="#section-projects" class="nav-link"        id="nav-projects"><span class="nav-dot"></span><span id="nav-projects-label">Projets</span></a>
+    <a href="#section-langs"    class="nav-link"        id="nav-langs">   <span class="nav-dot"></span><span id="nav-langs-label">Langues</span></a>
+  </nav>
+
+  <div class="sidebar-contact">
+    <a href="mailto:ch.liefrid@gmail.com" class="contact-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <rect x="2" y="4" width="20" height="16" rx="2"/>
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+      </svg>
+      ch.liefrid@gmail.com
+    </a>
+    <a href="tel:+33754830903" class="contact-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12 19.79 19.79 0 0 1 1.57 3.38 2 2 0 0 1 3.54 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.88-.88a2 2 0 0 1 2.11-.45c.908.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/>
+      </svg>
+      +33 754 830 903
+    </a>
+    <a href="https://github.com/novoSoftEng" target="_blank" class="contact-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+      </svg>
+      github.com/novoSoftEng
+    </a>
+
+    <div class="availability-badge">
+      <span class="pulse"></span>
+      <span id="sb-avail">Disponible sept. 2026</span>
+    </div>
+
+    <a id="cv-download-btn" href="./CV_Chihab_Liefrid_FR.pdf" download class="cv-download-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      <span id="sb-cv-label">T&eacute;l&eacute;charger le CV</span>
+    </a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main content-fade" id="main-content">
+
+  <!-- ABOUT -->
+  <section id="section-about" class="section">
+    <div class="section-label" id="t-about-label"></div>
+    <h1 class="section-title" id="t-about-title"></h1>
+    <div class="divider"></div>
+    <p class="hero-intro" id="t-about-intro"></p>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num">4+</span><span class="stat-label" id="t-stat1"></span></div>
+      <div class="stat"><span class="stat-num">5</span><span class="stat-label"  id="t-stat2"></span></div>
+      <div class="stat"><span class="stat-num">C1</span><span class="stat-label" id="t-stat3"></span></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="section-exp" class="section">
+    <div class="section-label" id="t-exp-label"></div>
+    <h2 class="section-title" id="t-exp-title"></h2>
+    <div class="divider"></div>
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-date">
+          <span id="t-exp1-date"></span>
+          <div><span class="timeline-current" id="t-current"></span></div>
+        </div>
+        <div class="timeline-body">
+          <div class="timeline-role" id="t-exp1-role"></div>
+          <div class="timeline-company">Sant&eacute; publique France</div>
+          <ul class="timeline-bullets">
+            <li id="t-exp1-b1"></li>
+            <li id="t-exp1-b2"></li>
+            <li id="t-exp1-b3"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date" id="t-exp2-date"></div>
+        <div class="timeline-body">
+          <div class="timeline-role" id="t-exp2-role"></div>
+          <div class="timeline-company">APM Terminals</div>
+          <ul class="timeline-bullets">
+            <li id="t-exp2-b1"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date" id="t-exp3-date"></div>
+        <div class="timeline-body">
+          <div class="timeline-role" id="t-exp3-role"></div>
+          <div class="timeline-company">Digital Place</div>
+          <ul class="timeline-bullets">
+            <li id="t-exp3-b1"></li>
+            <li id="t-exp3-b2"></li>
+            <li id="t-exp3-b3"></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date" id="t-exp4-date"></div>
+        <div class="timeline-body">
+          <div class="timeline-role" id="t-exp4-role"></div>
+          <div class="timeline-company">Kiinov</div>
+          <ul class="timeline-bullets">
+            <li id="t-exp4-b1"></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="section-edu" class="section">
+    <div class="section-label" id="t-edu-label"></div>
+    <h2 class="section-title" id="t-edu-title"></h2>
+    <div class="divider"></div>
+    <div class="edu-grid">
+      <div class="edu-item">
+        <div class="edu-year">2025 &ndash; 2026</div>
+        <div>
+          <div class="edu-degree" id="t-edu1-degree"></div>
+          <div class="edu-school">Universit&eacute; Marie &amp; Louis Pasteur</div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-year">2023 &ndash; 2025</div>
+        <div>
+          <div class="edu-degree" id="t-edu2-degree"></div>
+          <div class="edu-school">Facult&eacute; des Sciences et Techniques de Tanger</div>
+        </div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-year">2020 &ndash; 2023</div>
+        <div>
+          <div class="edu-degree" id="t-edu3-degree"></div>
+          <div class="edu-school">Facult&eacute; des Sciences et Techniques de Tanger</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="section-skills" class="section">
+    <div class="section-label" id="t-skills-label"></div>
+    <h2 class="section-title" id="t-skills-title"></h2>
+    <div class="divider"></div>
+    <div class="skills-grid">
+
+      <div class="skill-card">
+        <div class="skill-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/>
+          </svg>
+          Machine Learning
+        </div>
+        <div class="skill-tags">
+          <span class="tag">PyTorch</span><span class="tag">scikit-learn</span><span class="tag">LLM</span>
+          <span class="tag">NLP</span><span class="tag">Transfer Learning</span><span class="tag">Fine-tuning</span><span class="tag">RAG</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>
+          </svg>
+          <span id="t-skill-lang-title"></span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">Python</span><span class="tag">R</span><span class="tag">Java</span>
+          <span class="tag">JavaScript</span><span class="tag">TypeScript</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <ellipse cx="12" cy="5" rx="9" ry="3"/>
+            <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+          </svg>
+          <span id="t-skill-db-title"></span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">PostgreSQL</span><span class="tag">DBT</span><span class="tag">MySQL</span>
+          <span class="tag">MongoDB</span><span class="tag">ChromaDB</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
+          </svg>
+          <span id="t-skill-app-title"></span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">FastAPI</span><span class="tag">Angular</span><span class="tag">Node.js</span>
+          <span class="tag">Shiny</span><span class="tag">Quarto</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+          <span id="t-skill-devops-title"></span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">Docker</span><span class="tag">Git / GitLab</span>
+          <span class="tag">Apache Airflow</span><span class="tag">Apache Spark</span>
+          <span class="tag">Linux</span><span class="tag">Apache Kafka</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+          </svg>
+          <span id="t-skill-design-title"></span>
+        </div>
+        <div class="skill-tags">
+          <span class="tag">UML</span>
+          <span class="tag" id="t-tag-etl"></span>
+          <span class="tag" id="t-tag-fhir"></span>
+          <span class="tag">Big Data</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="section-projects" class="section">
+    <div class="section-label" id="t-proj-label"></div>
+    <h2 class="section-title" id="t-proj-title"></h2>
+    <div class="divider"></div>
+    <div class="projects-grid">
+
+      <div class="project-card">
+        <div class="project-icon">&#x1FAC1;</div>
+        <div class="project-name" id="t-proj1-name"></div>
+        <div class="project-desc" id="t-proj1-desc"></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">&#x1F3E5;</div>
+        <div class="project-name" id="t-proj2-name"></div>
+        <div class="project-desc" id="t-proj2-desc"></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">&#x1F916;</div>
+        <div class="project-name" id="t-proj3-name"></div>
+        <div class="project-desc" id="t-proj3-desc"></div>
+      </div>
+
+      <div class="project-card">
+        <div class="project-icon">&#x1F4CA;</div>
+        <div class="project-name" id="t-proj4-name"></div>
+        <div class="project-desc" id="t-proj4-desc"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LANGUAGES SECTION -->
+  <section id="section-langs" class="section">
+    <div class="section-label" id="t-langs-label"></div>
+    <h2 class="section-title" id="t-langs-title"></h2>
+    <div class="divider"></div>
+    <div class="lang-grid">
+
+      <div class="lang-card">
+        <div>
+          <div class="lang-name" id="t-lang1-name"></div>
+          <div style="font-size:13px;color:var(--mid);margin-top:2px;" id="t-lang1-prof"></div>
+        </div>
+        <div class="lang-level">
+          <span class="lang-badge">C1</span>
+          <span class="lang-cert">TOEFL iBT 104</span>
+        </div>
+      </div>
+
+      <div class="lang-card">
+        <div>
+          <div class="lang-name" id="t-lang2-name"></div>
+          <div style="font-size:13px;color:var(--mid);margin-top:2px;" id="t-lang2-prof"></div>
+        </div>
+        <div class="lang-level">
+          <span class="lang-badge">C1</span>
+          <span class="lang-cert" id="t-lang2-cert"></span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function () {
+
+  /* ================================================================
+     TRANSLATIONS
+  ================================================================ */
+  var T = {
+    fr: {
+      /* sidebar */
+      "sb-subtitle":        "Data Scientist \u00B7 Ing\u00E9nieur IA",
+      "sb-avail":           "Disponible sept.\u00A02026",
+      "sb-cv-label":        "T\u00E9l\u00E9charger le CV",
+      /* nav */
+      "nav-about-label":    "\u00C0 propos",
+      "nav-exp-label":      "Exp\u00E9riences",
+      "nav-edu-label":      "Formation",
+      "nav-skills-label":   "Comp\u00E9tences",
+      "nav-projects-label": "Projets",
+      "nav-langs-label":    "Langues",
+      /* about */
+      "t-about-label": "Introduction",
+      "t-about-title": "Construire des syst\u00E8mes<br>intelligents \u00E0 partir des donn\u00E9es.",
+      "t-about-intro": "Ing\u00E9nieur Data Science &amp; IA titulaire de deux Masters, actuellement en apprentissage \u00E0 Sant\u00E9 publique France. Je suis \u00E0 la recherche d\u2019une th\u00E8se dans le domaine de l\u2019IA appliqu\u00E9e \u00E0 la sant\u00E9, de pr\u00E9f\u00E9rence en convention CIFRE.",
+      "t-stat1": "Exp\u00E9riences professionnelles",
+      "t-stat2": "Projets acad\u00E9miques",
+      "t-stat3": "Anglais &amp; Fran\u00E7ais",
+      /* experience */
+      "t-exp-label":  "Parcours professionnel",
+      "t-exp-title":  "Exp\u00E9riences",
+      "t-current":    "En cours",
+      "t-exp1-date":  "Sept.\u00A02025 \u2013 Pr\u00E9sent",
+      "t-exp1-role":  "Data Scientist / Ing\u00E9nieur Apprenti",
+      "t-exp1-b1":    "Conception et d\u00E9veloppement de pipelines ETL pour le traitement et la valorisation de donn\u00E9es de sant\u00E9 publique.",
+      "t-exp1-b2":    "Cr\u00E9ation de rapports et visualisations \u00E0 destination des \u00E9pid\u00E9miologistes via Quarto pour appuyer des d\u00E9cisions fond\u00E9es sur les donn\u00E9es.",
+      "t-exp1-b3":    "Mise en place et optimisation d\u2019une base de donn\u00E9es PostgreSQL pour un stockage et un acc\u00E8s structur\u00E9s et performants.",
+      "t-exp2-date":  "F\u00E9v.\u00A02025 \u2013 Juil.\u00A02025",
+      "t-exp2-role":  "Stagiaire Ing\u00E9nieur IT &amp; Op\u00E9rations",
+      "t-exp2-b1":    "D\u00E9veloppement d\u2019une solution d\u2019optimisation de la gestion de parc \u00E0 conteneurs via des algorithmes m\u00E9taheuristiques et g\u00E9n\u00E9tiques pour maximiser l\u2019efficacit\u00E9 op\u00E9rationnelle.",
+      "t-exp3-date":  "Juil.\u00A02024 \u2013 Ao\u00FBt\u00A02024",
+      "t-exp3-role":  "Stagiaire Data Engineer",
+      "t-exp3-b1":    "Contribution \u00E0 une plateforme d\u2019analyse du march\u00E9 du travail au sein d\u2019une \u00E9quipe d\u2019ing\u00E9nieurs.",
+      "t-exp3-b2":    "D\u00E9veloppement d\u2019un pipeline NLP pour l\u2019extraction de comp\u00E9tences depuis des CVs et offres d\u2019emploi en fran\u00E7ais.",
+      "t-exp3-b3":    "Am\u00E9lioration des pipelines de nettoyage de donn\u00E9es existants avec RegEx et Apache Spark.",
+      "t-exp4-date":  "Avr.\u00A02023 \u2013 Ao\u00FBt\u00A02023",
+      "t-exp4-role":  "Stagiaire D\u00E9veloppeur",
+      "t-exp4-b1":    "D\u00E9veloppement d\u2019une application full-stack de gestion de stock avec la stack MEAN (MongoDB, ExpressJS, Angular, NodeJS).",
+      /* education */
+      "t-edu-label":    "Parcours acad\u00E9mique",
+      "t-edu-title":    "Formation",
+      "t-edu1-degree":  "M2 \u2014 Ing\u00E9nierie de la Sant\u00E9 &amp; Intelligence Artificielle",
+      "t-edu2-degree":  "M1 &amp; M2 \u2014 Intelligence Artificielle &amp; Data Science",
+      "t-edu3-degree":  "Licence \u2014 Informatique",
+      /* skills */
+      "t-skills-label":       "Stack technique",
+      "t-skills-title":       "Comp\u00E9tences",
+      "t-skill-lang-title":   "Langages de programmation",
+      "t-skill-db-title":     "Bases de donn\u00E9es",
+      "t-skill-app-title":    "D\u00E9veloppement applicatif",
+      "t-skill-devops-title": "DevOps &amp; Outils",
+      "t-skill-design-title": "Conception logicielle",
+      "t-tag-etl":            "Pipelines ETL",
+      "t-tag-fhir":           "Standards FHIR",
+      /* projects */
+      "t-proj-label":  "Personnel &amp; Acad\u00E9mique",
+      "t-proj-title":  "Projets",
+      "t-proj1-name":  "D\u00E9tection du Cancer du Poumon par CNN",
+      "t-proj1-desc":  "Mod\u00E8le de d\u00E9tection du cancer du poumon par r\u00E9seaux de neurones convolutifs avec Transfer Learning et PyTorch pour une classification d\u2019images m\u00E9dicales \u00E0 haute pr\u00E9cision.",
+      "t-proj2-name":  "Espace de Donn\u00E9es M\u00E9dicales",
+      "t-proj2-desc":  "Plateforme d\u2019int\u00E9gration et d\u2019exploration de donn\u00E9es m\u00E9dicales bas\u00E9e sur les standards FHIR, avec un backend robuste et une interface interactive de visualisation et de recherche.",
+      "t-proj3-name":  "Chatbot FSTT \u2014 RAG Fine-Tun\u00E9",
+      "t-proj3-desc":  "Chatbot en fran\u00E7ais con\u00E7u en \u00E9quipe avec le LLM Gemma, combinant Fine-tuning et Retrieval-Augmented Generation. Web scraping via BeautifulSoup, stockage vectoriel dans ChromaDB.",
+      "t-proj4-name":  "Analyse de Sentiment Twitter en Temps R\u00E9el",
+      "t-proj4-desc":  "Syst\u00E8me d\u2019analyse de sentiment en temps r\u00E9el exploitant Apache Kafka Streams et des mod\u00E8les ML pour pr\u00E9dire les sentiments des utilisateurs Twitter, avec tableau de bord en direct.",
+      /* languages */
+      "t-langs-label": "Communication",
+      "t-langs-title": "Langues",
+      "t-lang1-name":  "Anglais",
+      "t-lang1-prof":  "Ma\u00EEtrise professionnelle",
+      "t-lang2-name":  "Fran\u00E7ais",
+      "t-lang2-prof":  "Ma\u00EEtrise professionnelle",
+      "t-lang2-cert":  "Certifi\u00E9 TCF"
+    },
+
+    en: {
+      /* sidebar */
+      "sb-subtitle":        "Data Scientist \u00B7 AI Engineer",
+      "sb-avail":           "Available Sep\u00A02026",
+      "sb-cv-label":        "Download CV",
+      /* nav */
+      "nav-about-label":    "About",
+      "nav-exp-label":      "Experience",
+      "nav-edu-label":      "Education",
+      "nav-skills-label":   "Skills",
+      "nav-projects-label": "Projects",
+      "nav-langs-label":    "Languages",
+      /* about */
+      "t-about-label": "Introduction",
+      "t-about-title": "Building intelligent<br>systems from data.",
+      "t-about-intro": "AI &amp; Data Science Engineer with dual Master\u2019s degrees, currently completing an apprenticeship at Sant\u00E9 publique France. I am actively looking for a PhD position in the field of AI applied to healthcare, preferably through a CIFRE convention.",
+      "t-stat1": "Professional experiences",
+      "t-stat2": "Academic projects",
+      "t-stat3": "English &amp; French",
+      /* experience */
+      "t-exp-label":  "Career",
+      "t-exp-title":  "Experience",
+      "t-current":    "Current",
+      "t-exp1-date":  "Sep\u00A02025 \u2013 Present",
+      "t-exp1-role":  "Data Scientist / Engineer Apprentice",
+      "t-exp1-b1":    "Design and development of ETL pipelines for processing and leveraging public health data.",
+      "t-exp1-b2":    "Created epidemiologist-facing reports and charts using Quarto to support data-driven decisions.",
+      "t-exp1-b3":    "Set up and optimised a PostgreSQL database for structured, high-performance data storage and access.",
+      "t-exp2-date":  "Feb\u00A02025 \u2013 Jul\u00A02025",
+      "t-exp2-role":  "IT Operations Engineer Intern",
+      "t-exp2-b1":    "Developed an optimisation solution for yard management strategy using metaheuristic and genetic algorithms to maximise operational efficiency.",
+      "t-exp3-date":  "Jul\u00A02024 \u2013 Aug\u00A02024",
+      "t-exp3-role":  "Data Engineer Intern",
+      "t-exp3-b1":    "Contributed to a labour market analytics platform within a team of engineers.",
+      "t-exp3-b2":    "Developed an NLP pipeline for extracting skills from French CVs and job postings.",
+      "t-exp3-b3":    "Improved existing data cleaning pipelines using RegEx and Apache Spark.",
+      "t-exp4-date":  "Apr\u00A02023 \u2013 Aug\u00A02023",
+      "t-exp4-role":  "Developer Intern",
+      "t-exp4-b1":    "Built a full-stack inventory management application using the MEAN stack (MongoDB, ExpressJS, Angular, NodeJS).",
+      /* education */
+      "t-edu-label":    "Academic Background",
+      "t-edu-title":    "Education",
+      "t-edu1-degree":  "M2 \u2014 Health Engineering &amp; Artificial Intelligence",
+      "t-edu2-degree":  "M1 &amp; M2 \u2014 Artificial Intelligence &amp; Data Science",
+      "t-edu3-degree":  "Bachelor\u2019s Degree \u2014 Computer Science",
+      /* skills */
+      "t-skills-label":       "Technical Stack",
+      "t-skills-title":       "Skills",
+      "t-skill-lang-title":   "Programming Languages",
+      "t-skill-db-title":     "Databases",
+      "t-skill-app-title":    "App Development",
+      "t-skill-devops-title": "DevOps &amp; Tools",
+      "t-skill-design-title": "Software Design",
+      "t-tag-etl":            "ETL Pipelines",
+      "t-tag-fhir":           "FHIR Standards",
+      /* projects */
+      "t-proj-label":  "Personal &amp; Academic",
+      "t-proj-title":  "Projects",
+      "t-proj1-name":  "Lung Cancer Detection CNN",
+      "t-proj1-desc":  "Lung cancer detection model using Convolutional Neural Networks with Transfer Learning and PyTorch for high-accuracy medical image classification.",
+      "t-proj2-name":  "Medical Data Space",
+      "t-proj2-desc":  "An integration and exploration platform for medical data built on FHIR standards, featuring a robust backend and an interactive visualisation and search interface.",
+      "t-proj3-name":  "FSTT Chatbot \u2014 Fine-Tuned RAG",
+      "t-proj3-desc":  "Team-built French-language chatbot using Gemma LLM with Fine-tuning and Retrieval-Augmented Generation. Web scraping with BeautifulSoup, vector storage in ChromaDB.",
+      "t-proj4-name":  "Real-Time Twitter Sentiment",
+      "t-proj4-desc":  "Real-time sentiment analysis system leveraging Apache Kafka Streams and ML models to predict Twitter user sentiments, with a live prediction dashboard.",
+      /* languages */
+      "t-langs-label": "Communication",
+      "t-langs-title": "Languages",
+      "t-lang1-name":  "English",
+      "t-lang1-prof":  "Professional proficiency",
+      "t-lang2-name":  "French",
+      "t-lang2-prof":  "Professional proficiency",
+      "t-lang2-cert":  "TCF Certified"
+    }
+  };
+
+  var CV_FILES = {
+    fr: "./CV_Chihab_Liefrid_FR.pdf",
+    en: "./CV_Chihab_Liefrid_EN.pdf"
+  };
+
+  var currentLang = "fr";
+
+  /* ── Apply all translations ── */
+  function applyLang(lang) {
+    currentLang = lang;
+    document.documentElement.lang = lang;
+
+    var dict = T[lang];
+    var id;
+    for (id in dict) {
+      var el = document.getElementById(id);
+      if (el) { el.innerHTML = dict[id]; }
+    }
+
+    document.getElementById("cv-download-btn").href = CV_FILES[lang];
+    document.getElementById("btn-fr").classList.toggle("active", lang === "fr");
+    document.getElementById("btn-en").classList.toggle("active", lang === "en");
+
+    try { localStorage.setItem("portfolio-lang", lang); } catch (e) {}
+  }
+
+  /* ── Public switcher (called by onclick) ── */
+  window.setLang = function (lang) {
+    if (lang === currentLang) { return; }
+    var main = document.getElementById("main-content");
+    main.classList.add("fading");
+    setTimeout(function () {
+      applyLang(lang);
+      main.classList.remove("fading");
+    }, 220);
+  };
+
+  /* ── Scroll: reveal sections ── */
+  function initObservers() {
+    var sections   = document.querySelectorAll(".section");
+    var navLinks   = document.querySelectorAll(".nav-link");
+    var sectionEls = document.querySelectorAll("section[id]");
+
+    if ("IntersectionObserver" in window) {
+      var revealObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("visible"); }
+        });
+      }, { threshold: 0.07 });
+      sections.forEach(function (s) { revealObs.observe(s); });
+
+      var navObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            navLinks.forEach(function (l) { l.classList.remove("active"); });
+            var a = document.querySelector('.nav-link[href="#' + e.target.id + '"]');
+            if (a) { a.classList.add("active"); }
+          }
+        });
+      }, { rootMargin: "-30% 0px -60% 0px" });
+      sectionEls.forEach(function (s) { navObs.observe(s); });
+    } else {
+      sections.forEach(function (s) { s.classList.add("visible"); });
+    }
+  }
+
+  /* ── Init ── */
+  function init() {
+    var saved = "fr";
+    try { saved = localStorage.getItem("portfolio-lang") || "fr"; } catch (e) {}
+    applyLang(saved);
+    initObservers();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+
+}());
+</script>
+</body>
+</html>
