@@ -1,145 +1,582 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chihab Eddine Liefrid | Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chihab-Eddine LIEFRID</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0e0f11;
+    --paper: #f5f2ec;
+    --accent: #1a4fad;
+    --accent-light: #e8edf8;
+    --mid: #6b6b72;
+    --border: #dedad3;
+    --warm-white: #faf8f4;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ── LANGUAGE BANNER ── */
+  .lang-banner {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: var(--warm-white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 40px;
+    z-index: 200;
+    gap: 12px;
+  }
+
+  .lang-banner-label {
+    font-size: 12px;
+    color: var(--mid);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .lang-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: none;
+    background: transparent;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mid);
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.3px;
+  }
+
+  .lang-btn .flag { font-size: 15px; }
+
+  .lang-btn.active {
+    background: var(--ink);
+    color: white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+  }
+
+  .lang-btn:not(.active):hover {
+    color: var(--ink);
+    background: var(--border);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed;
+    left: 0; top: 52px; bottom: 0;
+    width: 300px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 36px 48px;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    overflow-y: auto;
+  }
+
+  .profile-photo-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .profile-photo {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255,255,255,0.12);
+    background: #1e2030;
+    display: block;
+  }
+
+  .profile-photo-fallback {
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    border: 3px solid rgba(255,255,255,0.12);
+    background: #1e2030;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+  }
+
+  .sidebar-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 24px; line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+    text-align: center;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .sidebar-title {
+    font-size: 10px; font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #8a8a94;
+    margin-bottom: 28px;
+    text-align: center;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .sidebar-nav {
+    display: flex; flex-direction: column; gap: 4px;
+    margin-bottom: auto;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .nav-link {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+    color: #8a8a94;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: var(--paper);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .nav-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #8a8a94;
+    flex-shrink: 0;
+    transition: background 0.2s;
+  }
+
+  .nav-link:hover .nav-dot, .nav-link.active .nav-dot { background: var(--accent); }
+
+  .sidebar-contact {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 24px; margin-top: 24px;
+    display: flex; flex-direction: column; gap: 10px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .contact-item {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: #8a8a94;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-item:hover { color: var(--paper); }
+  .contact-item svg { flex-shrink: 0; }
+
+  .availability-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: rgba(26,79,173,0.18);
+    border: 1px solid rgba(26,79,173,0.3);
+    color: #7aa4f0;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: 0.3px;
+    padding: 7px 12px;
+    border-radius: 100px;
+    margin-top: 20px;
+  }
+
+  .pulse {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #7aa4f0;
+    position: relative; flex-shrink: 0;
+  }
+
+  .pulse::after {
+    content: '';
+    position: absolute; inset: -3px;
+    border-radius: 50%;
+    border: 1px solid #7aa4f0;
+    animation: pulseRing 2s infinite;
+  }
+
+  .cv-download-btn {
+    display: flex; align-items: center;
+    justify-content: center; gap: 8px;
+    margin-top: 12px; padding: 11px 16px;
+    background: var(--accent);
+    color: white; text-decoration: none;
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 0.3px;
+    border-radius: 8px;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .cv-download-btn:hover { background: #1642a0; transform: translateY(-1px); }
+
+  /* ── MAIN ── */
+  .main {
+    margin-left: 300px;
+    margin-top: 52px;
+    min-height: calc(100vh - 52px);
+    padding: 72px 72px 80px;
+    max-width: 900px;
+  }
+
+  .section {
+    margin-bottom: 88px;
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .section.visible { opacity: 1; transform: translateY(0); }
+
+  .section-label {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px; line-height: 1.15;
+    letter-spacing: -1px; margin-bottom: 40px;
+    color: var(--ink);
+  }
+
+  .divider {
+    width: 48px; height: 3px;
+    background: var(--accent);
+    border-radius: 2px; margin-bottom: 40px;
+  }
+
+  .hero-intro {
+    font-size: 18px; color: var(--mid);
+    line-height: 1.8; max-width: 600px;
+    margin-bottom: 40px;
+    border-left: 3px solid var(--accent);
+    padding-left: 24px;
+    font-weight: 300; font-style: italic;
+  }
+
+  .hero-stats { display: flex; gap: 48px; flex-wrap: wrap; }
+  .stat { display: flex; flex-direction: column; gap: 4px; }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px; color: var(--ink); line-height: 1;
+  }
+
+  .stat-label { font-size: 12px; color: var(--mid); font-weight: 500; letter-spacing: 0.5px; }
+
+  /* ── TIMELINE ── */
+  .timeline { display: flex; flex-direction: column; }
+
+  .timeline-item {
+    display: grid; grid-template-columns: 160px 1fr;
+    gap: 32px; padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-date { font-size: 12px; color: var(--mid); font-weight: 500; padding-top: 4px; line-height: 1.5; }
+
+  .timeline-current {
+    display: inline-block;
+    background: var(--accent); color: white;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 4px; margin-top: 6px;
+  }
+
+  .timeline-role { font-weight: 600; font-size: 17px; color: var(--ink); margin-bottom: 2px; line-height: 1.3; }
+  .timeline-company { font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 14px; }
+
+  .timeline-bullets { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+
+  .timeline-bullets li {
+    font-size: 14px; color: var(--mid);
+    padding-left: 16px; position: relative; line-height: 1.6;
+  }
+
+  .timeline-bullets li::before { content: '—'; position: absolute; left: 0; color: var(--border); }
+
+  /* ── SKILLS ── */
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .skill-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .skill-card:hover { border-color: var(--accent); box-shadow: 0 4px 20px rgba(26,79,173,0.07); }
+
+  .skill-card-title {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+
+  .tag {
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 11px;
+    font-size: 13px; color: var(--ink);
+    transition: all 0.2s;
+  }
+
+  .tag:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+
+  /* ── EDUCATION ── */
+  .edu-grid { display: flex; flex-direction: column; }
+
+  .edu-item {
+    display: grid; grid-template-columns: 160px 1fr;
+    gap: 32px; padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .edu-item:last-child { border-bottom: none; }
+  .edu-year { font-size: 12px; color: var(--mid); font-weight: 500; padding-top: 3px; }
+  .edu-degree { font-weight: 600; font-size: 16px; color: var(--ink); margin-bottom: 4px; line-height: 1.4; }
+  .edu-school { font-size: 13px; color: var(--mid); }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+
+  .project-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 28px;
+    transition: all 0.25s;
+    position: relative; overflow: hidden;
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover { border-color: var(--accent); box-shadow: 0 8px 32px rgba(26,79,173,0.09); transform: translateY(-3px); }
+  .project-card:hover::before { transform: scaleX(1); }
+
+  .project-icon {
+    width: 40px; height: 40px;
+    background: var(--accent-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px; font-size: 18px;
+  }
+
+  .project-name { font-weight: 600; font-size: 16px; color: var(--ink); margin-bottom: 10px; line-height: 1.3; }
+  .project-desc { font-size: 13px; color: var(--mid); line-height: 1.65; }
+
+  /* ── LANGUAGES ── */
+  .lang-grid { display: flex; gap: 20px; }
+
+  .lang-card {
+    flex: 1; background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .lang-name { font-weight: 600; font-size: 16px; }
+  .lang-level { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+
+  .lang-badge {
+    background: var(--accent); color: white;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 6px;
+  }
+
+  .lang-cert { font-size: 11px; color: var(--mid); }
+
+  /* ── TRANSITION FADE ── */
+  .content-fade {
+    transition: opacity 0.25s ease;
+  }
+  .content-fade.fading { opacity: 0; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulseRing {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 900px) {
+    .lang-banner { padding: 0 20px; left: 0; }
+    .sidebar { position: relative; width: 100%; top: 0; padding: 36px 28px; }
+    .main { margin-left: 0; margin-top: 52px; padding: 40px 24px; }
+    .skills-grid, .projects-grid { grid-template-columns: 1fr; }
+    .timeline-item, .edu-item { grid-template-columns: 1fr; gap: 8px; }
+    .lang-grid { flex-direction: column; }
+  }
+</style>
 </head>
 <body>
-    <header>
-         <img src="photo.jpeg" alt="Chihab Eddine Liefrid" class="profile-photo">
-        <h1>Chihab Eddine Liefrid</h1>
-        <p>Graduate Student in Artificial Intelligence and Data Science</p>
-        <nav>
-            <a href="#about">About Me</a>
-            <a href="#education">Education</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#contact">Contact</a>
-        </nav>
-    </header>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>I am a passionate and ambitious graduate student with skills in AI and web development, eager to expand my expertise in computer science. I have a keen interest in AI, Software Engineering, and Data, aiming to further develop and learn.</p>
-        <p><a href="cv-en.pdf" download="Chihab_Eddine_Liefrid_CV.pdf" class="download-btn">Download My CV</a></p>
-    </section>
-    
-    
-    <section id="education">
-        <h2>Education</h2>
-        <h3>Master of Science in Artificial Intelligence and Data Science</h3>
-        <p>2023-present, Faculty of Science and Technology of Tangier</p>
+<!-- ── LANGUAGE BANNER ── -->
+<div class="lang-banner">
+  <span class="lang-banner-label" id="banner-label">Langue / Language</span>
+  <div class="lang-toggle">
+    <button class="lang-btn active" id="btn-fr" onclick="setLang('fr')">
+      <span class="flag">🇫🇷</span> Français
+    </button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">
+      <span class="flag">🇬🇧</span> English
+    </button>
+  </div>
+</div>
 
-        <h3>Bachelor of Science in Computer Science</h3>
-        <p>2020-2023, Faculty of Science and Technology of Tangier</p>
-    </section>
-    
-    <section id="experience">
-        <h2>Experience</h2>
-        <button class="toggle-btn">PFA: Data Scientist Intern, Digital Place</button>
-        <div class="collapsible-content">
-            <p>June 2024 - August 2024</p>
-            <p>Participated in the creation of a skills and occupations text classification project.</p>
-            <ul>
-                <li>Designed and Improved previous Data cleaning pipelines.</li>
-                <li>Developed an innovative solution for extracting skills from French-language sentences using natural language processing.</li>
-                <li>Integrated my solution to extract skills and occupations from CVs and job postings.</li>
-            </ul>
-            <p><strong>Key Words:</strong> NLP, Machine Learning, RegEx, Python, pyspark, FastAPI</p>
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <div class="profile-photo-wrap">
+    <img
+      src="photo.jpeg"
+      alt="Chihab-Eddine LIEFRID"
+      class="profile-photo"
+      onerror="this.style.display='none'; document.querySelector('.profile-photo-fallback').style.display='flex';"
+    />
+    <div class="profile-photo-fallback">👤</div>
+  </div>
+
+  <div class="sidebar-logo">Chihab-Eddine<br>LIEFRID</div>
+  <div class="sidebar-title" data-fr="Data Scientist · Ingénieur IA" data-en="Data Scientist · AI Engineer">Data Scientist · Ingénieur IA</div>
+
+  <nav class="sidebar-nav">
+    <a href="#apropos"     class="nav-link active" data-fr="À propos"    data-en="About"><span class="nav-dot"></span>À propos</a>
+    <a href="#experience"  class="nav-link"         data-fr="Expériences" data-en="Experience"><span class="nav-dot"></span>Expériences</a>
+    <a href="#formation"   class="nav-link"         data-fr="Formation"   data-en="Education"><span class="nav-dot"></span>Formation</a>
+    <a href="#competences" class="nav-link"         data-fr="Compétences" data-en="Skills"><span class="nav-dot"></span>Compétences</a>
+    <a href="#projets"     class="nav-link"         data-fr="Projets"     data-en="Projects"><span class="nav-dot"></span>Projets</a>
+    <a href="#langues"     class="nav-link"         data-fr="Langues"     data-en="Languages"><span class="nav-dot"></span>Langues</a>
+  </nav>
+
+  <div class="sidebar-contact">
+    <a href="mailto:ch.liefrid@gmail.com" class="contact-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      ch.liefrid@gmail.com
+    </a>
+    <a href="tel:+33754830903" class="contact-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.64 12 19.79 19.79 0 0 1 1.57 3.38 2 2 0 0 1 3.54 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.5a16 16 0 0 0 6 6l.88-.88a2 2 0 0 1 2.11-.45c.908.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16z"/></svg>
+      +33 754 830 903
+    </a>
+    <a href="https://github.com/novoSoftEng" target="_blank" class="contact-item">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      github.com/novoSoftEng
+    </a>
+
+    <div class="availability-badge">
+      <span class="pulse"></span>
+      <span data-fr="Disponible sept. 2026" data-en="Available Sep 2026">Disponible sept. 2026</span>
+    </div>
+
+    <a id="cv-download-btn" href="./CV_Chihab_Liefrid_FR.pdf" download class="cv-download-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span data-fr="Télécharger le CV" data-en="Download CV">Télécharger le CV</span>
+    </a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<main class="main content-fade" id="main-content">
+
+  <!-- À PROPOS / ABOUT -->
+  <section id="apropos" class="section">
+    <div class="section-label" data-fr="Introduction" data-en="Introduction">Introduction</div>
+    <h1 class="section-title">
+      <span data-fr="Construire des systèmes<br>intelligents à partir des données." data-en="Building intelligent<br>systems from data.">Construire des systèmes<br>intelligents à partir des données.</span>
+    </h1>
+    <div class="divider"></div>
+    <p class="hero-intro">
+      <span data-fr="Ingénieur Data Science & IA titulaire de deux Masters, actuellement en apprentissage à Santé publique France. Passionné par la conception de solutions à fort impact — pipelines ETL, modèles NLP et applications IA full-stack prêtes pour la production."
+            data-en="AI & Data Science Engineer with dual Master's degrees, currently completing an apprenticeship at Santé publique France. Passionate about building impactful, production-ready solutions — from ETL pipelines and NLP models to full-stack AI applications.">
+        Ingénieur Data Science & IA titulaire de deux Masters, actuellement en apprentissage à Santé publique France. Passionné par la conception de solutions à fort impact — pipelines ETL, modèles NLP et applications IA full-stack prêtes pour la production.
+      </span>
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">4+</span>
+        <span class="stat-label" data-fr="Expériences professionnelles" data-en="Professional experiences">Expériences professionnelles</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">5</span>
+        <span class="stat-label" data-fr="Projets académiques" data-en="Academic projects">Projets académiques</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">C1</span>
+        <span class="stat-label" data-fr="Anglais & Français" data-en="English & French">Anglais & Français</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPÉRIENCES / EXPERIENCE -->
+  <section id="experience" class="section">
+    <div class="section-label" data-fr="Parcours professionnel" data-en="Career">Parcours professionnel</div>
+    <h2 class="section-title" data-fr="Expériences" data-en="Experience">Expériences</h2>
+    <div class="divider"></div>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-date">
+          <span data-fr="Sept. 2025 – Présent" data-en="Sep 2025 – Present">Sept. 2025 – Présent</span>
+          <div><span class="timeline-current" data-fr="En cours" data-en="Current">En cours</span></div>
         </div>
-        
-        <button class="toggle-btn">PFE: Analyst and Developer Intern, Kiinov</button>
-        <div class="collapsible-content">
-            <p>April 2023 - August 2023</p>
-            <ul>
-                <li>Designed and developed a full-stack Inventory Management application using the MEAN Stack (MongoDB, Express.js, Angular, Node.js).</li>
-                <li>Implemented RESTful APIs for seamless integration of front-end and back-end functionality.</li>
-            </ul>
-            <p><strong>Key Words:</strong> MongoDB, Express.js, Angular, Node.js, Inventory Management</p>
-        </div>
-    </section>
-    
-    <section id="languages">
-        <h2>Languages</h2>
-        <ul>
-            <li><strong>English : C1 ( Toefl ibt ) </strong>
-            <li><strong>French : C1 ( TCF ) </strong>
-        
-        </ul>
-    </section>
-    <section id="skills">
-        <h2>Skills</h2>
-        <ul>
-            <li><strong>Programming : </strong>Machine Learning, Python, C/C++, Java , JavaScript , Express.Js </li>
-            <li><strong>DataBases :</strong>MySQL, MongoDB</li>
-            <li> <strong>Application developpement:</strong> HTLM , CSS , Angular, Node.js, UML , FASTAPI , Flask </li>
-            <li><strong>DevOps :</strong> Git/GitHub, Linux, Docker, Kubernetes</li>
-        </ul>
-    </section>
-    
-    <section id="projects">
-        <h2>Projects</h2>
-        <h3 class="toggle-btn">Fine-Tuned RAG French FSTT Chatbot</h3>
-        <div class="collapsible-content"></div>
-        <p>Created a chatbot for the Faculty of Science and Technology in Tangier (FSTT) using Fine-tuning and Retrieval Augmented Generation (RAG) techniques with a user-friendly interface.</p>
-        <p><strong>Technologies Used:</strong> NLP ,  Python, BeautifulSoup, Chroma Database, Gemma 2b LLM, LangChain Framework</p>
-
-        <h3>Real-time Twitter Sentiment Analysis</h3>
-        <div class="collapsible-content"></div>
-        <p>Developed a web application using Apache Kafka Stream API for real-time analysis of Twitter data. The application predicts the type of sentiment (positive, negative, neutral) in real-time using various NLP techniques.</p>
-        <p><strong>Technologies Used:</strong> Apache Kafka, Python, Stream API</p>
-
-        <h3>Comparative Study: Gaussian Processes for Classification vs Logistic Regression</h3>
-        <div class="collapsible-content"></div>
-        <p>Conducted a comparative study and implementation between Gaussian Processes for classification and Logistic Regression to predict credit risk.</p>
-        <p><strong>Technologies Used:</strong> Python, Machine Learning</p>
-
-        <h3>Data Analysis Application</h3>
-        <p>Developed a versatile data manipulation and analysis application, allowing users to visualize results from various machine learning models using a user-friendly GUI.</p>
-        <p><strong>Technologies Used:</strong> Python, Tkinter, scikit-learn</p>
-
-        <h3>Multiplatform Game Development in C++</h3>
-        <p>Developed a cross-platform game using C++ and Cocos2d-x, focusing on object-oriented programming principles.</p>
-        <p><strong>Technologies Used:</strong> C++, Cocos2d-x</p>
-        <p><strong>Link:</strong> <a href="https://github.com/novoSoftEng/game" target="_blank">GitHub Repository</a></p>
-
-        <h3>E-commerce Website Development</h3>
-        <p>Developed an E-commerce website as part of a 5-person team. Implemented the backend using PHP and created a dynamic front-end with Bootstrap, JavaScript, and AJAX.</p>
-        <p><strong>Technologies Used:</strong> PHP, JavaScript, AJAX, Bootstrap, jQuery</p>
-        <p><strong>Link:</strong> <a href="https://github.com/novoSoftEng/Mini-Market" target="_blank">GitHub Repository</a></p>
-
-        <h3>Product Management Application in JavaFX</h3>
-        <p>Developed a product management application using JavaFX for the user interface. The project involves creating a user-friendly interface for adding, modifying, deleting, and displaying products.</p>
-        <p><strong>Technologies Used:</strong> JavaFX</p>
-
-        <h3>Front-End Web Development Project</h3>
-        <p>Designed and developed a dynamic web user interface using JavaScript, HTML, and CSS. The project involved creating an interactive website with advanced client-side features using DOM manipulation.</p>
-        <p><strong>Technologies Used:</strong> JavaScript, HTML, CSS</p>
-
-        <h3>E-commerce Website in PHP and MySQL</h3>
-        <p>Developed a complete e-commerce website using PHP and MySQL for data management. The project includes a product management system, shopping cart, online payment integration, and user management.</p>
-        <p><strong>Technologies Used:</strong> PHP, MySQL</p>
-
-       
-
-        
-    </section>
-
-    
-    <section id="contact">
-        <h2>Contact</h2>
-        <p>Email: <a href="mailto:ch.liefrid@gmail.com">ch.liefrid@gmail.com</a></p>
-        <p>Number: +212 684204325</p>
-        <p>GitHub: <a href="https://github.com/novoSoftEng">github.com/novoSoftEng</a></p>
-    </section>
-
-    <footer>
-        <p>&copy; 2024 Chihab Eddine Liefrid</p>
-    </footer>
-
-    <script src="scripts.js"></script>
-</body>
-</html>
+        <div class="timeline-body">
+          <div class="timeline-role" data-fr="Data Scientist / Ingénieur Apprenti" data-en="Data Scientist / Engineer Apprentice">Data Scientist / Ingénieur Apprenti</div>
+          <div class="timeline-company">Santé publique France</div>
+          <ul class="timeline-bullets">
+            <li><span data-fr="Conception et développement de pipelines ETL pour le traitement et l
